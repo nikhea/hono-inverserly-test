@@ -13,7 +13,7 @@ const server = new MastraServer({ app, mastra });
 await server.init();
 
 app.get("/", (c) => {
-  return c.text("Hello Hono!");
+  return c.json({ status: "success", message: "Hello, Mastra with Hono!" });
 });
 
 serve(
