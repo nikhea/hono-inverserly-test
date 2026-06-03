@@ -1,27 +1,32 @@
+import "reflect-metadata";
+import "dotenv/config";
+import { InversifyHonoHttpAdapter } from "@inversifyjs/http-hono";
 import { serve } from "@hono/node-server";
-import { Hono } from "hono";
-import {
-  type HonoBindings,
-  type HonoVariables,
-  MastraServer,
-} from "@mastra/hono";
-import { mastra } from "./mastra/index.js";
+import { buildContainer } from "./container";
+import { MastraController } from "./controllers/mastra.controller";
 
-const app = new Hono<{ Bindings: HonoBindings; Variables: HonoVariables }>();
-const server = new MastraServer({ app, mastra });
+async function main(): Promise<void> {
+  const container = buildContainer();
 
-await server.init();
+  const adapter = new InversifyHonoHttpAdapter(container);
+  const app = await adapter.build();
 
-app.get("/", (c) => {
-  return c.json({ status: "success", message: "Hello, Mastra with Hono!" });
-});
+  const mastraController = container.get(MastraController);
+  await mastraController.init(app);
 
-serve(
-  {
-    fetch: app.fetch,
-    port: process.env.PORT ? parseInt(process.env.PORT) : 5000,
-  },
-  (info) => {
-    console.log(`Server is running on http://localhost:${info.port}`);
-  },
-);
+  app.get("/", (c) => {
+    return c.json({ status: "success", message: "Hello, Mastra with Hono!" });
+  });
+
+  serve(
+    {
+      fetch: app.fetch,
+      port: parseInt(process.env.PORT!),
+    },
+    (info) => {
+      console.log(`Server is running on http://localhost:${info.port}`);
+    },
+  );
+}
+
+main().catch(console.error);

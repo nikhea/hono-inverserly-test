@@ -3,13 +3,15 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "start": "node dist/index.js"
   },
   "dependencies": {
     "@clickhouse/client": "^1.19.0",
     "@hono/node-server": "^1.19.14",
     "@hono/zod-validator": "^0.8.0",
+    "@inversifyjs/http-core": "^5.4.5",
+    "@inversifyjs/http-hono": "^5.4.5",
     "@mastra/core": "^1.37.1",
     "@mastra/duckdb": "^1.4.0",
     "@mastra/hono": "^1.4.20",
@@ -21,6 +23,7 @@
     "ai": "^6.0.194",
     "better-auth": "^1.6.13",
     "bullmq": "^5.77.7",
+    "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
     "drizzle-zod": "^0.8.3",
     "hono": "^4.12.23",
