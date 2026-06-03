@@ -35,15 +35,29 @@ export class ProductsController {
 
   @Post()
   async create(@Body() body: unknown): Promise<CreatedHttpResponse> {
-    const parsed = createProductSchema.parse(body);
-    const product = await this.service.create(parsed);
+    const result = createProductSchema.safeParse(body);
+    if (!result.success) {
+      throw new ErrorHttpResponse(
+        HttpStatusCode.BAD_REQUEST,
+        { message: "Validation failed", errors: result.error.issues },
+        "Validation failed",
+      );
+    }
+    const product = await this.service.create(result.data);
     return new CreatedHttpResponse(product);
   }
 
   @Put("/:id")
   async update(@Params({ name: "id" }) id: string, @Body() body: unknown) {
-    const parsed = updateProductSchema.parse(body);
-    const product = await this.service.update(id, parsed);
+    const result = updateProductSchema.safeParse(body);
+    if (!result.success) {
+      throw new ErrorHttpResponse(
+        HttpStatusCode.BAD_REQUEST,
+        { message: "Validation failed", errors: result.error.issues },
+        "Validation failed",
+      );
+    }
+    const product = await this.service.update(id, result.data);
     if (!product) {
       throw new ErrorHttpResponse(
         HttpStatusCode.NOT_FOUND,

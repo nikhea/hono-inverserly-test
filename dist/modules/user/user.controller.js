@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Controller, Get, Params } from "@inversifyjs/http-core";
+import { Controller, Get, Params, Query } from "@inversifyjs/http-core";
 import { inject } from "inversify";
 import { ErrorHttpResponse, HttpStatusCode } from "@inversifyjs/http-core";
 import { TYPES } from "../../core/types";

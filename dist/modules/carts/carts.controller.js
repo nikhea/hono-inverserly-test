@@ -29,8 +29,11 @@ let CartsController = class CartsController {
         return cart;
     }
     async addItem(userId, body) {
-        const parsed = addToCartSchema.parse(body);
-        const cart = await this.service.addItem(userId, parsed.productId, parsed.quantity);
+        const result = addToCartSchema.safeParse(body);
+        if (!result.success) {
+            throw new ErrorHttpResponse(HttpStatusCode.BAD_REQUEST, { message: "Validation failed", errors: result.error.issues }, "Validation failed");
+        }
+        const cart = await this.service.addItem(userId, result.data.productId, result.data.quantity);
         return new CreatedHttpResponse(cart);
     }
     async removeItem(userId, productId) {

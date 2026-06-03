@@ -1,4 +1,4 @@
-import { Controller, Get, Params } from "@inversifyjs/http-core";
+import { Controller, Get, Params, Query } from "@inversifyjs/http-core";
 import { inject } from "inversify";
 import { ErrorHttpResponse, HttpStatusCode } from "@inversifyjs/http-core";
 import { TYPES } from "../../core/types";
