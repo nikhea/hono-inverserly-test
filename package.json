@@ -32,6 +32,7 @@
     "ioredis": "^5.11.0",
     "layercache": "^3.1.0",
     "mastra": "^1.10.2",
+    "mongoose": "^9.6.3",
     "pg": "^8.21.0",
     "rate-limit-redis": "^5.0.0",
     "reflect-metadata": "^0.2.2",

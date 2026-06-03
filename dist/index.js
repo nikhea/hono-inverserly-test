@@ -2,10 +2,15 @@ import "reflect-metadata";
 import "dotenv/config";
 import { InversifyHonoHttpAdapter } from "@inversifyjs/http-hono";
 import { serve } from "@hono/node-server";
-import { buildContainer } from "./container";
-import { MastraController } from "./controllers/mastra.controller";
+import { buildContainer } from "./core/di/container";
+import { MastraController } from "./mastra.controller";
+import { DatabaseProvider } from "./core/database/db.provider";
+import { TYPES } from "./core/types";
 async function main() {
     const container = buildContainer();
+    // Connect to MongoDB
+    const dbProvider = container.get(TYPES.DatabaseProvider);
+    await dbProvider.connect();
     const adapter = new InversifyHonoHttpAdapter(container);
     const app = await adapter.build();
     const mastraController = container.get(MastraController);
